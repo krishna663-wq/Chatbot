@@ -14,58 +14,70 @@ from datetime import datetime
 
 # Streamlit app configuration
 st.set_page_config(
-    page_title="AI Text Assistant",
-    page_icon="🤖",
+    page_title="Professional AI Assistant",
+    page_icon="🎯",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for modern styling
+# Enhanced Custom CSS with professional styling
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
     
     .stApp {
-        font-family: 'Poppins', sans-serif;
+        font-family: 'Inter', sans-serif;
     }
     
     .main-title {
-        background: linear-gradient(45deg, #2E3192, #1BFFFF);
+        background: linear-gradient(135deg, #24292e, #4A90E2);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 2.5rem !important;
+        font-size: 2.8rem !important;
         font-weight: 700 !important;
-        margin-bottom: 1rem !important;
+        margin-bottom: 0.5rem !important;
         text-align: center;
+        padding: 1rem 0;
+    }
+    
+    .creator-credit {
+        text-align: center;
+        color: #4A4A4A;
+        font-size: 1rem;
+        margin-bottom: 2rem;
+        font-weight: 500;
     }
     
     .chat-container {
-        padding: 1.5rem;
-        border-radius: 15px;
-        margin: 1rem 0;
-        background: rgba(255, 255, 255, 0.05);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 2rem;
+        border-radius: 12px;
+        margin: 1.5rem 0;
+        background: steelblue;
+        box-shadow: blue;
     }
     
     .chat-message {
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 0.5rem 0;
-        animation: fadeIn 0.5s ease;
+        padding: 1.2rem;
+        border-radius: 8px;
+        margin: 0.8rem 0;
+        animation: slideIn 0.3s ease;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        color: #FFFFFF;
     }
     
     .user-message {
-        background: rgba(46, 49, 146, 0.1);
+        background: steelblue;
         margin-left: 2rem;
+        border-left: 4px solid #2196F3;
     }
     
     .assistant-message {
-        background: rgba(27, 255, 255, 0.1);
+        background: black;
         margin-right: 2rem;
+        border-left: 4px solid #4A90E2;
     }
     
-    @keyframes fadeIn {
+    @keyframes slideIn {
         from { opacity: 0; transform: translateY(10px); }
         to { opacity: 1; transform: translateY(0); }
     }
@@ -75,21 +87,50 @@ st.markdown("""
         bottom: 0;
         left: 0;
         right: 0;
-        padding: 0.5rem;
-        background: rgba(0, 0, 0, 0.8);
+        padding: 0.8rem;
+        background: #24292e;
         color: white;
         text-align: center;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1000;
+    }
+    
+    .status-item {
+        display: inline-flex;
+        align-items: center;
+        margin: 0 1rem;
     }
     
     .loader {
-        width: 20px;
-        height: 20px;
+        width: 24px;
+        height: 24px;
         border: 3px solid #f3f3f3;
-        border-top: 3px solid #3498db;
+        border-top: 3px solid #4A90E2;
         border-radius: 50%;
         animation: spin 1s linear infinite;
         margin: 0 auto;
+    }
+    
+    .sidebar-header {
+        background: black;
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+    }
+    
+    .professional-input {
+        border: 2px solid #E0E0E0;
+        border-radius: 8px;
+        padding: 0.8rem;
+        transition: all 0.3s ease;
+    }
+    
+    .professional-input:focus {
+        border-color: #4A90E2;
+        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
     }
     
     @keyframes spin {
@@ -106,55 +147,60 @@ if 'messages' not in st.session_state:
 if 'chat_cleared' not in st.session_state:
     st.session_state.chat_cleared = False
 
-# Sidebar Configuration
+# Enhanced Sidebar Configuration
 with st.sidebar:
-    st.markdown("### 🎮 Control Center")
+    st.markdown('<div class="sidebar-header"><h2>⚙️ Configuration Panel</h2></div>', unsafe_allow_html=True)
     
     temperature = st.slider(
-        "🌡️ Creativity Level",
+        "Intelligence Creativity Level",
         min_value=0.0,
         max_value=1.0,
         value=0.7,
         step=0.1,
+        help="Adjust the creativity level of responses"
     )
     
     if temperature < 0.3:
-        st.info("🧊 Conservative responses")
+        st.info("🎯 Precise & Focused Responses")
     elif temperature < 0.7:
-        st.success("🌟 Balanced responses")
+        st.success("⚖️ Balanced & Nuanced Responses")
     else:
-        st.warning("🔥 Creative responses")
+        st.warning("💡 Creative & Exploratory Responses")
     
     model_name = st.radio(
-        "Choose your AI model:",
-        ["gemini-1.5-flash", "gemini-1.5-pro"]
+        "Select AI Model:",
+        ["gemini-1.5-pro", "gemini-1.5-flash"],
+        help="Choose the AI model that best suits your needs"
     )
     
-    if st.button("🗑️ Clear Chat History"):
+    if st.button("🔄 Clear Conversation", help="Erase all chat history"):
         StreamlitChatMessageHistory(key="langchain_messages").clear()
         st.session_state.messages = []
         st.session_state.chat_cleared = True
-        st.success("Chat cleared!")
+        st.success("Conversation history has been cleared!")
 
-# Main Content
-st.markdown('<h1 class="main-title">🤖 AI Genius Chat</h1>', unsafe_allow_html=True)
+# Main Content with Enhanced Header
+st.markdown('<h1 class="main-title">Professional AI Assistant</h1>', unsafe_allow_html=True)
+st.markdown('<p class="creator-credit">Developed by Krishna Gopal Sharma | Advanced AI Solutions</p>', unsafe_allow_html=True)
 
-# Welcome message
+# Welcome message with professional styling
 st.markdown("""
     <div class="chat-container">
-        <h3>👋 Welcome to AI Genius!</h3>
-        <p>I'm your advanced AI assistant, powered by state-of-the-art language models.</p>
+        <h3>Welcome to Your Professional AI Assistant</h3>
+        <p>I'm your dedicated AI companion, engineered to provide expert assistance and insights. 
+        How may I help you today?</p>
     </div>
 """, unsafe_allow_html=True)
 
-# Function to get API key
+# Function to get API key with enhanced styling
 def get_api_key():
     if "api_key" not in st.session_state:
         st.session_state["api_key"] = "AIzaSyCHC8isbg40fjG_GpQhhat-wD2soflKYyY"
     return st.text_input(
-        "🔑 Enter your Google API Key:",
+        "Enter API Key:",
         type="password",
-        key="api_key"
+        key="api_key",
+        help="Enter your Google API key to access the AI services"
     )
 
 # Get API key
@@ -162,12 +208,13 @@ api_key = get_api_key()
 
 # Main chat interface
 if api_key:
-    # Create prompt template
+    # Create enhanced prompt template
     prompt = ChatPromptTemplate(
         messages=[
             SystemMessagePromptTemplate.from_template(
-                """You are AI Genius, an advanced AI assistant with a friendly personality.
-                Provide detailed, accurate responses while maintaining a conversational tone."""
+                """You are a Professional AI Assistant, engineered by Krishna Gopal Sharma.
+                Deliver comprehensive, accurate, and professionally-toned responses while maintaining
+                a balance between expertise and accessibility."""
             ),
             MessagesPlaceholder(variable_name="chat_history"),
             HumanMessagePromptTemplate.from_template("{question}"),
@@ -193,7 +240,7 @@ if api_key:
         history_messages_key="chat_history",
     )
 
-    # Display chat history if not cleared
+    # Display chat history
     if not st.session_state.chat_cleared:
         for message in msgs.messages:
             role = "assistant" if message.type == "ai" else "human"
@@ -204,21 +251,18 @@ if api_key:
     # Reset chat cleared flag
     st.session_state.chat_cleared = False
 
-    # Chat input
-    user_input = st.chat_input("💭 Ask me anything...")
+    # Enhanced chat input
+    user_input = st.chat_input("Type your message here...")
 
     if user_input:
-        # Display user message
         with st.chat_message("human"):
             st.markdown(f'<div class="chat-message user-message">{user_input}</div>',
                        unsafe_allow_html=True)
 
-        # Display assistant response
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
             full_response = ""
             
-            # Show typing indicator
             message_placeholder.markdown('<div class="loader"></div>', unsafe_allow_html=True)
 
             try:
@@ -239,15 +283,22 @@ if api_key:
                 )
 
             except Exception as e:
-                st.error(f"🚨 Error: {str(e)}")
-                st.info("🔄 Please try again or check your API key.")
+                st.error(f"Error: {str(e)}")
+                st.info("Please verify your API key and try again.")
 
-    # Status bar
+    # Enhanced status bar
     st.markdown(
-        f'<div class="status-bar">🔵 Online | Model: {model_name} | Temperature: {temperature:.1f} | {datetime.now().strftime("%H:%M:%S")}</div>',
+        f'''
+        <div class="status-bar">
+            <div class="status-item">🟢 System Active</div>
+            <div class="status-item">📊 Model: {model_name}</div>
+            <div class="status-item">🎯 Precision: {temperature:.1f}</div>
+            <div class="status-item">⏰ {datetime.now().strftime("%H:%M:%S")}</div>
+            <div class="status-item">👨‍💻 Krishna Gopal Sharma</div>
+        </div>
+        ''',
         unsafe_allow_html=True
     )
 
 else:
-    st.warning("Please enter your API Key to continue.")
-
+    st.warning("Please provide your API Key to begin.")
