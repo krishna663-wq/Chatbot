@@ -1,13 +1,28 @@
-from langchain.prompts import (
+# from langchain.prompts import (
+#     ChatPromptTemplate,
+#     HumanMessagePromptTemplate,
+#     MessagesPlaceholder,
+#     SystemMessagePromptTemplate,
+# )
+# from langchain_community.chat_message_histories import StreamlitChatMessageHistory
+# from langchain_core.runnables.history import RunnableWithMessageHistory
+# from langchain_google_genai import ChatGoogleGenerativeAI
+# from langchain.schema.output_parser import StrOutputParser
+# import streamlit as st
+# import time
+# from datetime import datetime
+
+# Modify imports
+from langchain_core.prompts import (
     ChatPromptTemplate,
     HumanMessagePromptTemplate,
-    MessagesPlaceholder,
-    SystemMessagePromptTemplate,
+    SystemMessagePromptTemplate
 )
+from langchain_core.messages import MessagesPlaceholder
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.schema.output_parser import StrOutputParser
+from langchain_core.output_parsers import StrOutputParser
 import streamlit as st
 import time
 from datetime import datetime
