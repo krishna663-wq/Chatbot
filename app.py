@@ -12,7 +12,7 @@ import time
 from datetime import datetime
 # Completely restructure imports
 from langchain.prompts import ChatPromptTemplate
-from langchain.memory import StreamlitChatMessageHistory
+# from langchain.memory import StreamlitChatMessageHistory
 
 
 # Streamlit app configuration
