@@ -6,14 +6,12 @@ from langchain.prompts import (
 )
 from langchain_community.chat_message_histories import StreamlitChatMessageHistory
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.schema.output_parser import StrOutputParser
 import streamlit as st
 import time
 from datetime import datetime
 # Completely restructure imports
 from langchain.prompts import ChatPromptTemplate
-from langchain.chat_models import ChatGoogleGenerativeAI
 from langchain.memory import StreamlitChatMessageHistory
 
 
